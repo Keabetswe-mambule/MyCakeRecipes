@@ -2,7 +2,7 @@
   "name": "com.sunderland.bh77nz",
   "displayName": "MyCakeRecipes",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "An app for managing cake recipes.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,11 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Keabetswe Thomas Mambule",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^9.0.0",
+    "cordova-android": "^9.1.0",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-whitelist": "^1.3.4"
   },
   "cordova": {
@@ -21,7 +22,9 @@
       "cordova-plugin-whitelist": {}
     },
     "platforms": [
+      "browser",
       "android"
     ]
-  }
+  },
+  "dependencies": {}
 }

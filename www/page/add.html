@@ -1,0 +1,197 @@
+<ons-page id="add">
+  <ons-toolbar>
+    <div class="left">
+      <ons-icon
+        icon="arrow-left"
+        fixed-width="false"
+        size="25px"
+        style="color: #fff; margin-left: 5px"
+        onclick="document.querySelector('#myNavigator').pushPage('page/main.html');"
+      ></ons-icon>
+    </div>
+    <div class="center">Add new recipe</div>
+  </ons-toolbar>
+  <ons-progress-bar id="loader_a" indeterminate></ons-progress-bar>
+  <div class="r_page">
+    <on-list> <br /></on-list>
+    <p
+      class="m_--"
+      style="text-align: left; font-size: 25px; margin-bottom: -13px !important"
+    >
+      Recipe title:
+    </p>
+    <div style="text-align: center">
+      <p>
+        <ons-input
+          style="width: 92% !important"
+          id="recipetitle__"
+          modifier="underbar"
+          type="text"
+          float
+        ></ons-input>
+      </p>
+      <p
+        class="m_--"
+        style="
+          text-align: left;
+          font-size: 15px;
+          margin-bottom: -13px !important;
+        "
+      >
+        Preparation time:
+      </p>
+      <p>
+        <ons-input
+          style="width: 90% !important"
+          id="recipetime__"
+          modifier="underbar"
+          type="time"
+          float
+        ></ons-input>
+      </p>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+        "
+      >
+        <div class="content">
+          <table style="width: 100%; text-align: left">
+            <tr>
+              <th>Ingredients</th>
+              <th>Amount</th>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="in1"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="am1"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="in2"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="am2"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="in3"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="am3"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="in4"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="am4"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="in5"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="am5"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </ons-card>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+          margin-bottom: 30px !important;
+        "
+      >
+        <div class="content">
+          <p class="m_-" style="margin: 0px; display: block">
+            <strong>Preparation</strong>
+          </p>
+          <br /><br />
+          <textarea
+            class="textarea"
+            style="width: 98%"
+            rows="6"
+            id="prep"
+          ></textarea>
+        </div>
+      </ons-card>
+
+      <ons-button class="b_-" id="addRecipe"
+        >Add recipe
+        <ons-icon icon="plus" fixed-width="false" style="color: #fff">
+        </ons-icon
+      ></ons-button>
+    </div>
+  </div>
+</ons-page>

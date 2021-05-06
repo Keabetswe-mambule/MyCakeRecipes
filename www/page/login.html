@@ -1,0 +1,46 @@
+<ons-page id="login">
+<ons-progress-bar id="loader_" indeterminate></ons-progress-bar>
+  <div class="r_page">
+    <div class="logo">
+      <img src="img/logo.png" width="60%" />
+    </div>
+    <p class="m_--">
+      Sign in to start adding and<br />
+      managing recipes
+    </p>
+    <div style="text-align: center">
+      <p>
+        <ons-input
+          id="email_"
+          type="email"
+          modifier="underbar"
+          placeholder="Email"
+          float
+        ></ons-input>
+      </p>
+      <p>
+        <ons-input
+          id="password_"
+          modifier="underbar"
+          type="password"
+          placeholder="Password"
+          float
+        ></ons-input>
+      </p>
+      <ons-button id="loginButton" class="b_-"
+        >Sign in
+        <ons-icon icon="sign-in-alt" fixed-width="false" style="color: #fff">
+        </ons-icon
+      ></ons-button>
+    </div>
+    <p class="m_--" onclick="" style="margin-top: 2px; font-size: small">
+      Forgot password?
+    </p>
+    <p
+      class="_dots-p"
+      onclick="document.querySelector('#myNavigator').pushPage('page/signup.html');"
+    >
+      No account yet? Sign up here
+    </p>
+  </div>
+</ons-page>

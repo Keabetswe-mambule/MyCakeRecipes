@@ -1,0 +1,62 @@
+<ons-page id="signup">
+  <ons-progress-bar id="loader__" indeterminate></ons-progress-bar>
+  <div class="r_page">
+    <div class="logo">
+      <img src="img/logo.png" width="40%" />
+    </div>
+    <p class="m_--">
+      Sign up to start adding and<br />
+      managing recipes
+    </p>
+    <div style="text-align: center">
+      <p>
+        <ons-input
+          id="firstname___"
+          type="text"
+          modifier="underbar"
+          placeholder="Firstname"
+          float
+        ></ons-input>
+      </p>
+      <p>
+        <ons-input
+          id="lastname___"
+          modifier="underbar"
+          type="text"
+          placeholder="Lastname"
+          float
+        ></ons-input>
+      </p>
+      <p>
+        <ons-input
+          id="email___"
+          type="email"
+          modifier="underbar"
+          placeholder="Email"
+          float
+        ></ons-input>
+      </p>
+      <p>
+        <ons-input
+          id="password___"
+          modifier="underbar"
+          type="password"
+          placeholder="Password"
+          float
+        ></ons-input>
+      </p>
+      <ons-button class="b_-" id="signUpBotton"
+        >Sign up
+        <ons-icon icon="user-plus" fixed-width="false" style="color: #fff">
+        </ons-icon
+      ></ons-button>
+    </div>
+
+    <p
+      class="_dots-p"
+      onclick="document.querySelector('#myNavigator').pushPage('page/login.html');"
+    >
+      Already have an account? Sign in
+    </p>
+  </div>
+</ons-page>

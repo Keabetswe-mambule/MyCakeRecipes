@@ -1,0 +1,103 @@
+<ons-page id="settings">
+  <ons-toolbar id="ons-toolbar">
+    <div class="left">
+      <ons-icon
+        icon="arrow-left"
+        fixed-width="false"
+        size="25px"
+        style="color: #fff; margin-left: 5px"
+        onclick="document.querySelector('#myNavigator').pushPage('page/main.html');"
+      ></ons-icon>
+    </div>
+    <div class="center">App preferences</div>
+  </ons-toolbar>
+  <div class="r_page">
+    <on-list>
+      <ons-list-item></ons-list-item>
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">John Doe</div>
+        <div class="right">
+          <ons-button id="signout" style="background-color: red !important"
+            >Sign Out
+            <ons-icon
+              icon="sign-out-alt"
+              fixed-width="false"
+              size="17px"
+              style="color: #fff"
+              onclick=""
+            ></ons-icon
+          ></ons-button>
+        </div>
+      </ons-list-item>
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">
+          Enable dark mode
+        </div>
+        <div class="right">
+          <ons-switch></ons-switch>
+        </div>
+      </ons-list-item>
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">Font size</div>
+        <div class="right">
+          <div class="right" style="color: #61cef0 !important">
+            12px
+            <ons-icon
+              icon="chevron-down"
+              size="20px"
+              fixed-width="false"
+              style="color: #61cef0"
+            >
+            </ons-icon>
+          </div>
+        </div>
+      </ons-list-item>
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">Typeface</div>
+        <div class="right" style="color: #61cef0 !important">
+          Regular
+          <ons-icon
+            icon="chevron-down"
+            size="20px"
+            fixed-width="false"
+            style="color: #61cef0"
+          >
+          </ons-icon>
+        </div>
+      </ons-list-item>
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">
+          Reset Account
+        </div>
+        <div class="right">
+          <ons-button style="background-color: red !important"
+            >Reset
+            <ons-icon
+              icon="power-off"
+              fixed-width="false"
+              size="17px"
+              style="color: #fff"
+              onclick=""
+            ></ons-icon
+          ></ons-button>
+        </div>
+      </ons-list-item>
+    </on-list>
+    <on-list style="bottom: 0px !important; position: fixed; width: 100%">
+      <ons-list-item>
+        <div class="center" style="color: #61cef0 !important">
+          Contact developer
+        </div>
+        <div class="right">
+          <ons-icon
+            icon="chevron-right"
+            size="20px"
+            fixed-width="false"
+            style="color: #61cef0"
+          >
+          </ons-icon>
+        </div>
+      </ons-list-item>
+    </on-list>
+  </div>
+</ons-page>

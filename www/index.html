@@ -1,33 +1,268 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"
-    />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta
-      name="viewport"
-      content="initial-scale=1, width=device-width, viewport-fit=cover"
-    />
-    <meta name="color-scheme" content="light dark" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="onsen/css/onsenui.css" />
     <link rel="stylesheet" href="onsen/css/onsen-css-components.min.css" />
-    <script src="onsen/js/onsenui.min.js"></script>
-    <title>Hello World</title>
   </head>
   <body>
-    <div class="app">
-      <h1>Apache Cordova</h1>
-      <div id="deviceready" class="blink">
-        <p class="event listening">Connecting to Device</p>
-        <p class="event received">Device is Ready</p>
-      </div>
-    </div>
+
+<ons-splitter>
+  <ons-splitter-side id="menu" side="left" width="65%" collapse>
+    <ons-page>
+      <ons-list class="wbg">
+        <ons-list-header style="background-color: #fff !important; padding-top: 15px !important;" onclick="document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="times"
+          fixed-width="false"
+          size="25px"
+          style="color: red; margin-right: 5px"
+        ></ons-icon>
+        </ons-list-header>
+        <ons-list-item onclick="document.querySelector('#myNavigator').pushPage('page/favorites.html');document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="star"
+          fixed-width="false"
+          size="20px"
+          style="color: #fff;"
+        ></ons-icon>Favorites
+        </ons-list-item>
+        <ons-list-item onclick="document.querySelector('#myNavigator').pushPage('page/convertor.html');document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="exchange-alt"
+          fixed-width="false"
+          size="20px"
+          style="color: #fff;"
+        ></ons-icon>Convertor
+        </ons-list-item>
+        <ons-list-item onclick="document.querySelector('#myNavigator').pushPage('page/settings.html');document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="gear"
+          fixed-width="false"
+          size="20px"
+          style="color: #fff;"
+        ></ons-icon>Preferences
+        </ons-list-item>
+        <ons-list-item onclick="document.querySelector('#myNavigator').pushPage('page/trash.html');document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="trash"
+          fixed-width="false"
+          size="18px"
+          style="color: #fff;"
+          onclick=""
+        ></ons-icon>Trash
+        </ons-list-item>
+      </ons-list>
+      <ons-list class="lo wbg">
+        <ons-list-item onclick="document.querySelector('#myNavigator').pushPage('page/about.html');document.getElementById('menu').close();" tappable>
+          <ons-icon
+          icon="info-circle"
+          fixed-width="false"
+          size="20px"
+          style="color: #fff;"
+        ></ons-icon>About app
+        </ons-list-item>
+      </ons-list>
+    </ons-page>
+  </ons-splitter-side>
+  <ons-splitter-content>
+    <ons-navigator id="myNavigator" page="splashmain.html"></ons-navigator>
+  </ons-splitter-content>
+</ons-splitter>
+
+    <template id="splashmain.html">
+      <ons-page id="splashmain">
+        <ons-progress-bar indeterminate ></ons-progress-bar>
+        <div class="r_page">
+          <div class="logo" >
+            <img src="img/logo.png" width="70%" style="margin-top: 30% !important" />
+          </div>
+          <p class="m_--" style="font-size: 30px; font-weight: bolder; padding-bottom: 0px !important;">MyCakeRecipes</p>
+          <p class="m_--">Giving you power to bake better</p>
+        </div>
+      </ons-page>
+    </template>
+
+    <template id="splash.html">
+      <ons-page id="spalsh">
+        <div class="r_page">
+          <div class="logo">
+            <img src="img/logo.png" width="70%" />
+          </div>
+          <div class="i_r_page">
+            <p class="m_70">Welcome to MyCakeRecipes</p>
+            <p class="m_">
+              A place to manage all your cake recipes with great ease
+            </p>
+            <ons-button class="b_" onclick="document.querySelector('#myNavigator').pushPage('splash1.html', { animation: 'none' });"
+              >Continue
+              <ons-icon
+                icon="chevron-right"
+                fixed-width="false"
+                style="color: #61cef0"
+              >
+              </ons-icon
+            ></ons-button>
+            <div class="_dots">
+              <ons-icon
+                icon="circle-notch"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon>
+            </div>
+          </div>
+        </div>
+      </ons-page>
+    </template>
+
+    <template id="splash1.html">
+      <ons-page id="splash1">
+        <div class="r_page">
+          <div class="logo">
+            <img src="img/logo.png" width="70%" />
+          </div>
+          <div class="i_r_page">
+            <p class="m_70">Giving you power to bake better</p>
+            <p class="m_-">
+              <ons-icon
+                icon="plus-square"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+            >Add recipes
+            </p>
+            
+            <p class="m_-">
+              <ons-icon
+                icon="share-alt"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+            >Share recipes
+            </p>
+            <p class="m_-">
+              <ons-icon
+                icon="edit"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+            >Edit recipes
+            </p>
+            <p class="m_-">
+              <ons-icon
+                icon="star"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+            >Save favorites
+            </p>
+            <ons-button class="b_" onclick="document.querySelector('#myNavigator').pushPage('splash2.html', { animation: 'none' });"
+              >Continue
+              <ons-icon
+                icon="chevron-right"
+                fixed-width="false"
+                style="color: #61cef0"
+              >
+              </ons-icon
+            ></ons-button>
+            <div class="_dots">
+              <ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle-notch"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon>
+            </div>
+          </div>
+        </div>
+      </ons-page>
+    </template>
+    <template id="splash2.html">
+      <ons-page id="splash2">
+        <div class="r_page">
+          <div class="logo">
+            <img src="img/logo.png" width="70%" />
+          </div>
+          <div class="i_r_page">
+            <p class="m_70">
+              Start adding and <br/>managing your recipes
+            </p>
+            <ons-button id="setIsLaunched" class="b_" style="margin-top: 90px !important;"
+              >Get Started
+              </ons-icon
+            ></ons-button>
+            <div class="_dots">
+              <ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon
+              ><ons-icon
+                icon="circle-notch"
+                size="10px"
+                fixed-width="false"
+                style="color: #fff"
+              >
+              </ons-icon>
+            </div>
+          </div>
+        </div>
+      </ons-page>
+    </template>
     <script src="cordova.js"></script>
+    <script src="onsen/js/onsenui.min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="js/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="js/firebasejs/8.4.1/firebase-auth.js"></script>
+    <script src="js/firebasejs/8.4.1/firebase-database.js"></script>
     <script src="js/index.js"></script>
   </body>
 </html>

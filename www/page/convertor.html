@@ -1,0 +1,110 @@
+<ons-page id="convertor">
+  <ons-toolbar>
+    <div class="left">
+      <ons-icon
+        icon="arrow-left"
+        fixed-width="false"
+        size="25px"
+        style="color: #fff; margin-left: 5px"
+        onclick="document.querySelector('#myNavigator').pushPage('page/main.html');"
+      ></ons-icon>
+    </div>
+    <div class="center">Weight convertor</div>
+  </ons-toolbar>
+  <div class="r_page">
+    <on-list> <br /></on-list>
+    <div style="text-align: center">
+      <p class="m_--">
+        Enter weight in fields to convert to other <br />
+        measuremnt system
+      </p>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+        "
+      >
+        <div class="content">
+          <table style="width: 100%; text-align: left">
+            <tr>
+              <th>Weight in grams</th>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="grams"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>grams</td>
+            </tr>
+          </table>
+        </div>
+      </ons-card>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+        "
+      >
+        <div class="content">
+          <table style="width: 100%; text-align: left">
+            <tr>
+              <th>Weight in pounds</th>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="pounds"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>pounds</td>
+            </tr>
+          </table>
+        </div>
+      </ons-card>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+          margin-bottom: 50px !important;
+        "
+      >
+        <div class="content">
+          <table style="width: 100%; text-align: left">
+            <tr>
+              <th>Weight in ounces</th>
+            </tr>
+            <tr>
+              <td>
+                <ons-input
+                  style="width: 90% !important"
+                  id="ounces"
+                  modifier="underbar"
+                  type="text"
+                  float
+                ></ons-input>
+              </td>
+              <td>ounces</td>
+            </tr>
+          </table>
+        </div>
+      </ons-card>
+      <ons-button class="b_-" onclick=""
+        >Convert
+        <ons-icon icon="exchange-alt" fixed-width="false" style="color: #fff">
+        </ons-icon
+      ></ons-button>
+    </div>
+  </div>
+</ons-page>
