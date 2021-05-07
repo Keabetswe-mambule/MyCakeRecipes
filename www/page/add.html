@@ -6,7 +6,7 @@
         fixed-width="false"
         size="25px"
         style="color: #fff; margin-left: 5px"
-        onclick="document.querySelector('#myNavigator').pushPage('page/main.html');"
+        onclick="document.querySelector('#myNavigator').popPage();"
       ></ons-icon>
     </div>
     <div class="center">Add new recipe</div>
@@ -38,14 +38,16 @@
           margin-bottom: -13px !important;
         "
       >
-        Preparation time:
+        Preparation munites:
       </p>
       <p>
         <ons-input
           style="width: 90% !important"
           id="recipetime__"
           modifier="underbar"
-          type="time"
+          type="number"
+          min="1"
+          max="300"
           float
         ></ons-input>
       </p>
