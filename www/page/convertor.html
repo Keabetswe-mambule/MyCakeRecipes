@@ -15,8 +15,8 @@
     <on-list> <br /></on-list>
     <div style="text-align: center">
       <p class="m_--">
-        Enter weight in fields to convert to other <br />
-        measuremnt system
+        Fill one weight feild to convert to other <br />
+        measurement systems
       </p>
       <ons-card
         style="
@@ -36,7 +36,7 @@
                   style="width: 90% !important"
                   id="grams"
                   modifier="underbar"
-                  type="text"
+                  type="number"
                   float
                 ></ons-input>
               </td>
@@ -63,7 +63,7 @@
                   style="width: 90% !important"
                   id="pounds"
                   modifier="underbar"
-                  type="text"
+                  type="number"
                   float
                 ></ons-input>
               </td>
@@ -91,7 +91,7 @@
                   style="width: 90% !important"
                   id="ounces"
                   modifier="underbar"
-                  type="text"
+                  type="number"
                   float
                 ></ons-input>
               </td>
@@ -100,7 +100,9 @@
           </table>
         </div>
       </ons-card>
-      <ons-button class="b_-" onclick=""
+      <ons-button
+        class="b_-"
+        onclick="app.convertWeight(document.getElementById('grams').value, document.getElementById('pounds').value, document.getElementById('ounces').value)"
         >Convert
         <ons-icon icon="exchange-alt" fixed-width="false" style="color: #fff">
         </ons-icon

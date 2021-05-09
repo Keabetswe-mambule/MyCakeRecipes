@@ -33,28 +33,35 @@ document.addEventListener("init", (event) => {
     page.querySelector("#addRecipe").onclick = function () {
       app.addRecipe(page);
     };
-  } else if (page.id === "trash") {
+  }
+});
+
+document.addEventListener("show", (event) => {
+  var page = event.target;
+  if (page.id === "trash") {
     firebase
       .database()
       .ref(`${app.user.uid}/deleted_recipes`)
-      .on("value", (snapshot) => {
+      .get()
+      .then((snapshot) => {
         const data = snapshot.val();
         document.getElementById("tload").innerHTML = ``;
-        if (data != null && data != undefined)
+        if (data != null && data != undefined) {
           for (const [key, value] of Object.entries(data)) {
             let recipe = value;
-            let display = `<ons-card>
+            let display = `<ons-card id="${key}_t">
       <div>
         <div class="title">${recipe.title}</div>
+        <br/>
         <div class="content">
           <div>
             <strong>Ingredients</strong>
             <p>
-              ${recipe.ing1} | ${recipe.amt1} <br />
-              ${recipe.ing2} | ${recipe.amt2}<br />
-              ${recipe.ing3} |${recipe.amt3}<br />
-              ${recipe.ing4} |${recipe.amt4}<br />
-              ${recipe.ing5} |${recipe.amt5}
+              ${recipe.ing1} &nbsp; ${recipe.amt1} <br />
+              ${recipe.ing2} &nbsp; ${recipe.amt2}<br />
+              ${recipe.ing3} &nbsp; ${recipe.amt3}<br />
+              ${recipe.ing4} &nbsp; ${recipe.amt4}<br />
+              ${recipe.ing5} &nbsp; ${recipe.amt5}
             </p>
           </div>
         </div>
@@ -62,22 +69,98 @@ document.addEventListener("init", (event) => {
       <div id="${key}_load_t" class="card_icons">
         <ons-icon
           icon="trash-restore"
-          fixed-width="false"
-          size="20px"
-          style="color: rgb(59, 59, 255); margin-left: 45%"
+           fixed-width="false"
+          size="15px"
+          style="color: rgb(59, 59, 255); "
           onclick="app.restoreRecipe('${key}')"
         ></ons-icon>
       </div>
     </ons-card>`;
             document.getElementById("tload").innerHTML += display;
           }
+        } else {
+          document.getElementById(
+            "tload"
+          ).innerHTML = `<on-list><br /></on-list>
+    <div style="text-align: center; margin-top: 85%">
+      <p class="m_--">No recipes to show yet</p>
+    </div>`;
+        }
       });
+  } else if (page.id === "favourites") {
+    firebase
+      .database()
+      .ref(`${app.user.uid}/recipes`)
+      .get()
+      .then((snapshot) => {
+        const data = snapshot.val();
+        document.getElementById("fload").innerHTML = ``;
+        if (data != null && data != undefined) {
+          let someFav;
+          for (const [key, value] of Object.entries(data)) {
+            let recipe = value;
+            let display;
+            if (recipe.fav) {
+              someFav = true;
+              favcolor = "#DBFF00";
+              display = `  <ons-card id="${key}f">
+      <div onclick="app.veiwRecipe('${key}')">
+        <div class="title">${recipe.title}</div>
+        <br/>
+        <div class="content">
+          <div>
+            <strong>Ingredients</strong>
+            <p>
+              ${recipe.ing1} &nbsp; ${recipe.amt1} <br />
+              ${recipe.ing2} &nbsp; ${recipe.amt2}<br />
+              ${recipe.ing3} &nbsp; ${recipe.amt3}<br />
+              ${recipe.ing4} &nbsp; ${recipe.amt4}<br/>
+              ${recipe.ing5} &nbsp; ${recipe.amt5}
+            </p>
+          </div>
+        </div>
+      </div>
+            <div class="card_icons" id="${key}_loader" >
+        <ons-icon
+          onclick="document.getElementById('${key}f').style.display = 'none'; app.toogleFavourite('${key}')"
+          icon="star"
+          id="${key}_star"
+          fixed-width="false"
+          size="15px"
+          style="color: ${favcolor}; margin-right: 5px"
+        ></ons-icon
+        >
+      </div>
+    </ons-card>
+`;
+              document.getElementById("fload").innerHTML += display;
+            }
+          }
+          if (!someFav) {
+            document.getElementById(
+              "fload"
+            ).innerHTML = `<on-list><br /></on-list>
+    <div style="text-align: center; margin-top: 85%">
+      <p class="m_--">No recipes to show yet</p>
+    </div>`;
+          }
+        } else {
+          document.getElementById(
+            "fload"
+          ).innerHTML = `<on-list><br /></on-list>
+    <div style="text-align: center; margin-top: 85%">
+      <p class="m_--">No recipes to show yet</p>
+    </div>`;
+        }
+      });
+  } else if (page.id === "settings") {
+    document.getElementById("_name").innerHTML = app.user.displayName;
   }
 });
 
 let app = {
   isLaunced: false,
-  isDarkMode: null,
+  isDarkMode: false,
   fontsize: null,
   typeface: null,
   user: null,
@@ -263,6 +346,10 @@ let app = {
                 .database()
                 .ref(`${app.user.uid}/recipes/${key}`)
                 .remove();
+              ons.notification.toast("Recipe moved to trash", {
+                timeout: 2000,
+                animation: "fall",
+              });
             });
         }
       });
@@ -274,33 +361,44 @@ let app = {
     firebase
       .database()
       .ref(`${app.user.uid}/deleted_recipes/${key}`)
-      .on("value", (snapshot) => {
-        const data = snapshot.val();
-        if (data != null && data != undefined) {
+      .get()
+      .then((snapshot) => {
+        const datam = snapshot.val();
+        if (datam != null && datam != undefined) {
           firebase
             .database()
-            .ref(`${app.user.uid}/recipes/${key}`)
+            .ref(
+              `${app.user.uid}/recipes/${key}` + Math.floor(Math.random() * 10)
+            )
             .set({
-              title: data.title,
-              time: data.time,
-              ing1: data.ing1,
-              amt1: data.amt1,
-              ing2: data.ing2,
-              amt2: data.amt2,
-              ing3: data.ing3,
-              amt3: data.amt3,
-              ing4: data.ing4,
-              amt4: data.amt4,
-              ing5: data.ing5,
-              amt5: data.amt5,
-              prep: data.prep,
-              fav: data.fav,
+              title: datam.title,
+              time: datam.time,
+              ing1: datam.ing1,
+              amt1: datam.amt1,
+              ing2: datam.ing2,
+              amt2: datam.amt2,
+              ing3: datam.ing3,
+              amt3: datam.amt3,
+              ing4: datam.ing4,
+              amt4: datam.amt4,
+              ing5: datam.ing5,
+              amt5: datam.amt5,
+              prep: datam.prep,
+              fav: datam.fav,
             })
             .then(() => {
               firebase
                 .database()
                 .ref(`${app.user.uid}/deleted_recipes/${key}`)
                 .remove();
+              document.getElementById(`${key}_t`).style.display = "none";
+              ons.notification.toast("Recipe restored from trash", {
+                timeout: 2000,
+                animation: "fall",
+              });
+            })
+            .catch((err) => {
+              console.log(err);
             });
         }
       });
@@ -319,11 +417,141 @@ let app = {
         .update({ fav: true });
     }
   },
-  veiwRecipe: () => {},
-  convertWeight: () => {},
-  resetAccount: () => {},
+  veiwRecipe: (key) => {
+    document
+      .querySelector("#myNavigator")
+      .pushPage("page/recipe.html", { animation: "fade" })
+      .then(() => {
+        firebase
+          .database()
+          .ref(`${app.user.uid}/recipes/${key}`)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.val();
+            if (data != null && data != undefined) {
+              let display = `<ons-toolbar>
+    <div class="left">
+      <ons-icon
+        icon="arrow-left"
+        fixed-width="false"
+        size="25px"
+        style="color: #fff; margin-left: 5px"
+        onclick="document.querySelector('#myNavigator').popPage();"
+      ></ons-icon>
+    </div>
+    <div class="center">${data.title}</div>
+  </ons-toolbar>
+  <ons-list><br/></ons-list>
+  <div class="r_page">
+    <on-list> <br /></on-list>
+
+    <div style="text-align: center">
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+        "
+      >
+        <div class="content">
+          <table style="width: 100%; text-align: left">
+            <tr>
+              <th>Ingredients</th>
+              <th>Amount</th>
+            </tr>
+            <tr>
+              <td>${data.ing1}</td>
+              <td>${data.amt1}</td>
+            </tr>
+            <tr>
+              <td>${data.ing2}</td>
+              <td>${data.amt2}</td>
+            </tr>
+            <tr>
+              <td>${data.ing3}</td>
+              <td>${data.amt3}</td>
+            </tr>
+            <tr>
+              <td>${data.ing4}</td>
+              <td>${data.amt4}</td>
+            </tr>
+            <tr>
+              <td>${data.ing5}</td>
+              <td>${data.amt5}</td>
+            </tr>
+          </table>
+        </div>
+      </ons-card>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 30px !important;
+          margin-bottom: 60px !important;
+        "
+      >
+        <div class="content">
+          <p class="m_-" style="height: 10px; margin: 0px; display: block">
+            <strong>Preparation - ${data.time} minutes</strong>
+          </p>
+          <br /><br />
+          <p style="width: 98% !important; height: 250px">
+            ${data.prep}
+          </p>
+        </div>
+      </ons-card>
+    </div>
+  </div>`;
+              document.getElementById("recipe").innerHTML = display;
+            }
+          });
+      });
+  },
+  convertWeight: (grams, pounds, ounces) => {
+    if (grams != "" || pounds != "" || ounces != "") {
+      if (grams != "") {
+        let pound = grams / 454;
+        let ounce = grams / 28.35;
+        pound += " ";
+        ounce += " ";
+        pound = pound.substring(0, 4);
+        ounce = ounce.substring(0, 4);
+        ons.notification.alert(
+          `Grams = ${grams}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
+          {
+            title: "Convertion result",
+          }
+        );
+      } else if (pounds != "") {
+        let gram = pounds * 454;
+        let ounce = pounds * 16;
+        gram += " ";
+        ounce += " ";
+        gram = gram.substring(0, 4);
+        ounce = ounce.substring(0, 4);
+        ons.notification.alert(
+          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${pounds}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
+          {
+            title: "Convertion result",
+          }
+        );
+      } else {
+        let gram = ounces * 28.35;
+        let pound = ounces / 16;
+        gram += " ";
+        pound += " ";
+        gram = gram.substring(0, 4);
+        pound = pound.substring(0, 4);
+        ons.notification.alert(
+          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${ounces}oz`,
+          {
+            title: "Convertion result",
+          }
+        );
+      }
+    }
+  },
   forgotPassword: () => {},
-  shareRecipe: (key) => {},
   listRecipes: (data) => {
     if (data != null && data != undefined) {
       document.getElementById("lister").innerHTML = ``;
@@ -336,8 +564,9 @@ let app = {
           favcolor = "#fff";
         }
         let display = `  <ons-card id="${key}">
-      <div onclick="console.log('holy shit')">
+      <div onclick="app.veiwRecipe('${key}')">
         <div class="title">${recipe.title}</div>
+        <br/>
         <div class="content">
           <div>
             <strong>Ingredients</strong>
@@ -359,14 +588,6 @@ let app = {
           fixed-width="false"
           size="15px"
           style="color: ${favcolor}; margin-right: 5px"
-        ></ons-icon
-        ><ons-icon
-          onclick="app.shareRecipe('${key}')"
-          icon="share-alt"
-          fixed-width="false"
-          size="15px"
-          style="color: rgb(59, 59, 255); margin-right: 5px"
-          onclick=""
         ></ons-icon
         ><ons-icon
           onclick="app.deleteRecipe('${key}')"
