@@ -1,6 +1,6 @@
 {
   "name": "com.sunderland.bh77nz",
-  "displayName": "MyCakeRecipes",
+  "displayName": "Recipes",
   "version": "1.0.0",
   "description": "An app for managing cake recipes.",
   "main": "index.js",
