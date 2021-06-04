@@ -12,7 +12,7 @@
     <div class="center">Add new recipe</div>
   </ons-toolbar>
   <ons-progress-bar id="loader_a" indeterminate></ons-progress-bar>
-  <div class="r_page">
+  <div class="r_page" style="height: 220% !important">
     <on-list> <br /></on-list>
     <p
       class="m_--"
@@ -38,7 +38,7 @@
           margin-bottom: -13px !important;
         "
       >
-        Preparation munites:
+        Preparation time:
       </p>
       <p>
         <ons-input
@@ -50,6 +50,19 @@
           max="300"
           float
         ></ons-input>
+      </p>
+      <p
+        class="m_--"
+        style="
+          text-align: left;
+          font-size: 15px;
+          margin-bottom: -13px !important;
+        "
+      >
+        Recipe Image
+      </p>
+      <p>
+        <img src="../img/default.jpg" id="myimg" />
       </p>
       <ons-card
         style="
@@ -177,6 +190,27 @@
       >
         <div class="content">
           <p class="m_-" style="margin: 0px; display: block">
+            <strong>Other Ingredients</strong>
+          </p>
+          <br /><br />
+          <textarea
+            class="textarea"
+            style="width: 98%"
+            rows="4"
+            id="other_i"
+          ></textarea>
+        </div>
+      </ons-card>
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 20px !important;
+          margin-bottom: 30px !important;
+        "
+      >
+        <div class="content">
+          <p class="m_-" style="margin: 0px; display: block">
             <strong>Preparation</strong>
           </p>
           <br /><br />
@@ -194,7 +228,6 @@
         <ons-icon icon="plus" fixed-width="false" style="color: #fff">
         </ons-icon
       ></ons-button>
-      <ons-list><br/></ons-list>
     </div>
   </div>
 </ons-page>

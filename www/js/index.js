@@ -33,6 +33,22 @@ document.addEventListener("init", (event) => {
     page.querySelector("#addRecipe").onclick = function () {
       app.addRecipe(page);
     };
+
+    page.querySelector("#myimg").onclick = function (e) {
+      let reader = new FileReader();
+      let input = document.createElement("input");
+      input.type = "file";
+
+      input.onchange = (e) => {
+        app.files = e.target.files;
+        reader = new FileReader();
+        reader.onload = function () {
+          document.getElementById("myimg").src = reader.result;
+        };
+        reader.readAsDataURL(app.files[0]);
+      };
+      input.click();
+    };
   }
 });
 
@@ -160,11 +176,11 @@ document.addEventListener("show", (event) => {
 
 let app = {
   isLaunced: false,
-  isDarkMode: false,
   fontsize: null,
   typeface: null,
   user: null,
   recipes: null,
+  files: [],
   login: (page) => {
     page.querySelector("#loader_").style.display = "block";
     //called to sign a user in
@@ -259,6 +275,7 @@ let app = {
     let ing5 = document.getElementById("in5").value;
     let amt5 = document.getElementById("am5").value;
     let prep = document.getElementById("prep").value;
+    let other_i = document.getElementById("other_i").value;
 
     if (
       (title != "") &
@@ -267,12 +284,10 @@ let app = {
       (amt2 != "") &
       (prep != "")
     ) {
+      let rand = Math.floor(Math.random() * 100000);
       firebase
         .database()
-        .ref(
-          `${app.user.uid}/recipes/${title}` +
-            Math.floor(Math.random() * 100000)
-        )
+        .ref(`${app.user.uid}/recipes/${title}_${rand}`)
         .set({
           title: title,
           time: time,
@@ -287,22 +302,54 @@ let app = {
           ing5: ing5,
           amt5: amt5,
           prep: prep,
+          other: other_i,
           fav: false,
         })
         .then(() => {
-          page.querySelector("#loader_a").style.display = "none";
-          ons.notification.toast("Recipe added to list", {
-            timeout: 2000,
-            animation: "fall",
-          });
-          myNavigator.popPage({ animation: "fade" });
+          let uploadTask = firebase
+            .storage()
+            .ref("Images/" + title)
+            .put(app.files[0]);
+
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (error) => {
+              ons.notification.toast("An errored while uploading", {
+                timeout: 2000,
+                animation: "fall",
+              });
+            },
+            () => {
+              uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+                let ImgUrl = url;
+                firebase
+                  .database()
+                  .ref(`${app.user.uid}/recipes/${title}_${rand}`)
+                  .update({
+                    img: ImgUrl,
+                  })
+                  .then(() => {
+                    page.querySelector("#loader_a").style.display = "none";
+                    ons.notification.toast("Recipe added to list", {
+                      timeout: 2000,
+                      animation: "fall",
+                    });
+                    myNavigator.popPage({ animation: "fade" });
+                  });
+              });
+            }
+          );
         })
-        .catch(() => {
+        .catch((e) => {
           page.querySelector("#loader_a").style.display = "none";
-          ons.notification.toast("An error occured. Please try again", {
-            timeout: 2000,
-            animation: "fall",
-          });
+          ons.notification.toast(
+            e.message + "An error occured. Please try again",
+            {
+              timeout: 2000,
+              animation: "fall",
+            }
+          );
         });
     } else {
       page.querySelector("#loader_a").style.display = "none";
@@ -340,6 +387,7 @@ let app = {
               amt5: data.amt5,
               prep: data.prep,
               fav: data.fav,
+              img: data.img,
             })
             .then(() => {
               firebase
@@ -385,6 +433,7 @@ let app = {
               amt5: datam.amt5,
               prep: datam.prep,
               fav: datam.fav,
+              img: datam.img,
             })
             .then(() => {
               firebase
@@ -410,11 +459,19 @@ let app = {
         .database()
         .ref(`${app.user.uid}/recipes/${key}`)
         .update({ fav: false });
+      ons.notification.toast("Recipe removed from favourites", {
+        timeout: 2000,
+        animation: "fall",
+      });
     } else {
       firebase
         .database()
         .ref(`${app.user.uid}/recipes/${key}`)
         .update({ fav: true });
+      ons.notification.toast("Recipe added from favourites", {
+        timeout: 2000,
+        animation: "fall",
+      });
     }
   },
   veiwRecipe: (key) => {
@@ -425,10 +482,14 @@ let app = {
         firebase
           .database()
           .ref(`${app.user.uid}/recipes/${key}`)
-          .get()
-          .then((snapshot) => {
+          .on("value", (snapshot) => {
             const data = snapshot.val();
             if (data != null && data != undefined) {
+              if (data.fav) {
+                favcolor = "#DBFF00";
+              } else {
+                favcolor = "#fff";
+              }
               let display = `<ons-toolbar>
     <div class="left">
       <ons-icon
@@ -440,20 +501,35 @@ let app = {
       ></ons-icon>
     </div>
     <div class="center">${data.title}</div>
+    <div class="right">
+    <ons-icon
+          onclick="app.toogleFavourite('${key}')"
+          icon="star"
+          id="${key}_star"
+          fixed-width="false"
+          size="25px"
+          style="color: ${favcolor}; margin-right: 5px"
+        ></ons-icon
+        ></div>
   </ons-toolbar>
   <ons-list><br/></ons-list>
   <div class="r_page">
     <on-list> <br /></on-list>
+            <img src="${data.img}" style="align-self: center;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;"/>
+    <div style="text-align: center;">
 
-    <div style="text-align: center">
       <ons-card
         style="
           width: 92% !important;
           margin-left: 3.5% !important;
-          margin-top: 30px !important;
+          margin-top: 5px !important;
         "
       >
         <div class="content">
+
           <table style="width: 100%; text-align: left">
             <tr>
               <th>Ingredients</th>
@@ -482,20 +558,38 @@ let app = {
           </table>
         </div>
       </ons-card>
+
       <ons-card
         style="
           width: 92% !important;
           margin-left: 3.5% !important;
-          margin-top: 30px !important;
-          margin-bottom: 60px !important;
+          margin-top: 1px !important;
         "
       >
         <div class="content">
-          <p class="m_-" style="height: 10px; margin: 0px; display: block">
+          <p class="m_-" style="margin: 0px; display: block">
+            <strong>Other Ingridients</strong>
+          </p><br/>
+          <p style="width: 98% !important;">
+            ${data.other}
+          </p>
+        </div>
+      </ons-card>
+
+      <ons-card
+        style="
+          width: 92% !important;
+          margin-left: 3.5% !important;
+          margin-top: 5px !important;
+          margin-bottom: 30px !important;
+        "
+      >
+        <div class="content">
+          <p class="m_-" style="margin: 0px; display: block">
             <strong>Preparation - ${data.time} minutes</strong>
           </p>
-          <br /><br />
-          <p style="width: 98% !important; height: 250px">
+          <br />
+          <p style="width: 98% !important;">
             ${data.prep}
           </p>
         </div>
@@ -507,43 +601,46 @@ let app = {
           });
       });
   },
-  convertWeight: (grams, pounds, ounces) => {
-    if (grams != "" || pounds != "" || ounces != "") {
-      if (grams != "") {
-        let pound = grams / 454;
-        let ounce = grams / 28.35;
+  convertWeight: (weight_) => {
+    if (weight_ != "") {
+      let weight = document.getElementById("weight");
+      weight = weight.options[weight.selectedIndex].text;
+
+      if (weight == "Grams") {
+        let pound = weight_ / 454;
+        let ounce = weight_ / 28.35;
         pound += " ";
         ounce += " ";
         pound = pound.substring(0, 4);
         ounce = ounce.substring(0, 4);
         ons.notification.alert(
-          `Grams = ${grams}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
+          `Grams = ${weight_}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
           {
             title: "Convertion result",
           }
         );
-      } else if (pounds != "") {
-        let gram = pounds * 454;
-        let ounce = pounds * 16;
+      } else if (weight == "Pounds") {
+        let gram = weight_ * 454;
+        let ounce = weight_ * 16;
         gram += " ";
         ounce += " ";
         gram = gram.substring(0, 4);
         ounce = ounce.substring(0, 4);
         ons.notification.alert(
-          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${pounds}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
+          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${weight_}lb <br/><br/>Ounces = ${ounce.trim()}oz`,
           {
             title: "Convertion result",
           }
         );
       } else {
-        let gram = ounces * 28.35;
-        let pound = ounces / 16;
+        let gram = weight_ * 28.35;
+        let pound = weight_ / 16;
         gram += " ";
         pound += " ";
         gram = gram.substring(0, 4);
         pound = pound.substring(0, 4);
         ons.notification.alert(
-          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${ounces}oz`,
+          `Grams = ${gram.trim()}g <br/><br/>Pounds = ${pound.trim()}lb <br/><br/>Ounces = ${weight_}oz`,
           {
             title: "Convertion result",
           }
@@ -552,6 +649,7 @@ let app = {
     }
   },
   forgotPassword: () => {},
+
   listRecipes: (data) => {
     if (data != null && data != undefined) {
       document.getElementById("lister").innerHTML = ``;
@@ -563,21 +661,13 @@ let app = {
         } else {
           favcolor = "#fff";
         }
-        let display = `  <ons-card id="${key}">
+        let display = `  <ons-card class="padding0" id="${key}">
+        <img id="recipe_img" onclick="app.veiwRecipe('${key}')" src="${recipe.img}" />
+        <div id="padding15"> 
       <div onclick="app.veiwRecipe('${key}')">
         <div class="title">${recipe.title}</div>
         <br/>
         <div class="content">
-          <div>
-            <strong>Ingredients</strong>
-            <p>
-              ${recipe.ing1} &nbsp; ${recipe.amt1} <br />
-              ${recipe.ing2} &nbsp; ${recipe.amt2}<br />
-              ${recipe.ing3} &nbsp; ${recipe.amt3}<br />
-              ${recipe.ing4} &nbsp; ${recipe.amt4}<br/>
-              ${recipe.ing5} &nbsp; ${recipe.amt5}
-            </p>
-          </div>
         </div>
       </div>
       <div class="card_icons" id="${key}_loader" >
@@ -597,6 +687,7 @@ let app = {
           style="color: red; margin-right: 5px"
           onclick=""
         ></ons-icon>
+      </div>
       </div>
     </ons-card>
 `;
@@ -627,7 +718,44 @@ let app = {
           myNavigator.pushPage("splash.html", { animation: "fade" });
         }
       } else {
-        myNavigator.pushPage("page/main.html", { animation: "fade" });
+        myNavigator
+          .pushPage("page/main.html", { animation: "fade" })
+          .then(() => {
+            firebase
+              .database()
+              .ref(`${app.user.uid}`)
+              .on("value", (snapshot) => {
+                const data = snapshot.val();
+                let sheet = document.styleSheets[0];
+                if (data.darkmode) {
+                  sheet.deleteRule(0);
+                  sheet.insertRule(".r_page {background-color: black;}", 0);
+                } else {
+                  sheet.deleteRule(0);
+                  sheet.insertRule(".r_page {background-color: #fff;}", 0);
+                }
+              });
+            firebase
+              .database()
+              .ref(`${app.user.uid}`)
+              .on("value", (snapshot) => {
+                const data = snapshot.val();
+                let sheet = document.styleSheets[1];
+                if (data.fontsize != `null` || data.fontsize != undefined) {
+                  sheet.deleteRule(0);
+                  sheet.insertRule(
+                    `ons-page {  font-size: ${data.fontsize} !important;}`,
+                    0
+                  );
+                } else {
+                  sheet.deleteRule(0);
+                  sheet.insertRule(
+                    "ons-page {  font-size: 13px !important;}",
+                    0
+                  );
+                }
+              });
+          });
         firebase
           .database()
           .ref(`${app.user.uid}/recipes`)
@@ -647,11 +775,69 @@ let app = {
         projectId: "cakerecipes-76fd7",
         databaseURL:
           "https://cakerecipes-76fd7-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        storageBucket: "cakerecipes-76fd7.appspot.com",
         appId: "1:266422662441:web:64f6ee546267d9fccfb338",
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       resolve("success");
     });
+  },
+  changeFontSize: (event) => {
+    if (event.target.value === `10px`) {
+      firebase
+        .database()
+        .ref(`${app.user.uid}`)
+        .update({ fontsize: event.target.value });
+      ons.notification.toast("Font size changed to 10px", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    } else if (event.target.value === `12px`) {
+      firebase
+        .database()
+        .ref(`${app.user.uid}`)
+        .update({ fontsize: event.target.value });
+      ons.notification.toast("Font size changed to 12px", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    } else if (event.target.value === `13px`) {
+      firebase
+        .database()
+        .ref(`${app.user.uid}`)
+        .update({ fontsize: event.target.value });
+      ons.notification.toast("Font size changed to 13px", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    } else if (event.target.value === `16px`) {
+      firebase
+        .database()
+        .ref(`${app.user.uid}`)
+        .update({ fontsize: event.target.value });
+      ons.notification.toast("Font size changed to 16px", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    }
+  },
+  changeFontFace: (event) => {
+    document.getElementsByTagName("P").style.fontsize = `${event.target.value}`;
+  },
+  switchTheme: (event) => {
+    if (event.target.value === `enable`) {
+      firebase.database().ref(`${app.user.uid}`).update({ darkmode: true });
+      ons.notification.toast("Dark mode enabled", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    } else if (event.target.value === `disable`) {
+      firebase.database().ref(`${app.user.uid}`).update({ darkmode: false });
+      ons.notification.toast("Dark mode disabled", {
+        timeout: 2000,
+        animation: "fall",
+      });
+    }
   },
 };

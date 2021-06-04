@@ -9,13 +9,13 @@
         onclick="document.querySelector('#myNavigator').popPage();"
       ></ons-icon>
     </div>
-    <div class="center">Weight convertor</div>
+    <div class="center">Weight Calculator</div>
   </ons-toolbar>
   <div class="r_page">
     <on-list> <br /></on-list>
     <div style="text-align: center">
       <p class="m_--">
-        Fill one weight feild to convert to other <br />
+        Fill weight feild to convert to other <br />
         measurement systems
       </p>
       <ons-card
@@ -23,86 +23,43 @@
           width: 92% !important;
           margin-left: 3.5% !important;
           margin-top: 30px !important;
+          margin-bottom: 30px !important;
         "
       >
         <div class="content">
           <table style="width: 100%; text-align: left">
             <tr>
-              <th>Weight in grams</th>
+              <th>Enter weight</th>
             </tr>
             <tr>
               <td>
                 <ons-input
                   style="width: 90% !important"
-                  id="grams"
+                  id="weight_"
                   modifier="underbar"
                   type="number"
                   float
                 ></ons-input>
               </td>
-              <td>grams</td>
-            </tr>
-          </table>
-        </div>
-      </ons-card>
-      <ons-card
-        style="
-          width: 92% !important;
-          margin-left: 3.5% !important;
-          margin-top: 30px !important;
-        "
-      >
-        <div class="content">
-          <table style="width: 100%; text-align: left">
-            <tr>
-              <th>Weight in pounds</th>
-            </tr>
-            <tr>
               <td>
-                <ons-input
-                  style="width: 90% !important"
-                  id="pounds"
-                  modifier="underbar"
-                  type="number"
-                  float
-                ></ons-input>
+                <ons-select class="select" id="weight">
+                  <select
+                    style="color: #fff; background-color: #61cef0"
+                    class="select-input"
+                  >
+                    <option value="grams">Grams</option>
+                    <option value="pounds">Pounds</option>
+                    <option value="ounce">Ounce</option>
+                  </select>
+                </ons-select>
               </td>
-              <td>pounds</td>
-            </tr>
-          </table>
-        </div>
-      </ons-card>
-      <ons-card
-        style="
-          width: 92% !important;
-          margin-left: 3.5% !important;
-          margin-top: 30px !important;
-          margin-bottom: 50px !important;
-        "
-      >
-        <div class="content">
-          <table style="width: 100%; text-align: left">
-            <tr>
-              <th>Weight in ounces</th>
-            </tr>
-            <tr>
-              <td>
-                <ons-input
-                  style="width: 90% !important"
-                  id="ounces"
-                  modifier="underbar"
-                  type="number"
-                  float
-                ></ons-input>
-              </td>
-              <td>ounces</td>
             </tr>
           </table>
         </div>
       </ons-card>
       <ons-button
         class="b_-"
-        onclick="app.convertWeight(document.getElementById('grams').value, document.getElementById('pounds').value, document.getElementById('ounces').value)"
+        onclick="app.convertWeight(document.getElementById('weight_').value)"
         >Convert
         <ons-icon icon="exchange-alt" fixed-width="false" style="color: #fff">
         </ons-icon

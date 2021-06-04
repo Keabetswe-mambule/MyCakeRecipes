@@ -30,39 +30,42 @@
         </div>
       </ons-list-item>
       <ons-list-item>
-        <div class="center" style="color: #61cef0 !important">
-          Enable dark mode
-        </div>
+        <div class="center" style="color: #61cef0 !important">Dark mode</div>
         <div class="right">
-          <ons-switch id="darkmode"></ons-switch>
+          <ons-select class="select" onchange="app.switchTheme(event)">
+            <select style="color: #61cef0" class="select-input">
+              <option>Select</option>
+              <option value="enable">Enable</option>
+              <option value="disable">Disable</option>
+            </select>
+          </ons-select>
         </div>
       </ons-list-item>
       <ons-list-item>
         <div class="center" style="color: #61cef0 !important">Font size</div>
         <div class="right">
-          <div class="right" style="color: #61cef0 !important">
-            12px
-            <ons-icon
-              icon="chevron-down"
-              size="20px"
-              fixed-width="false"
-              style="color: #61cef0"
-            >
-            </ons-icon>
-          </div>
+          <ons-select class="select" onchange="app.changeFontSize(event)">
+            <select style="color: #61cef0" class="select-input">
+              <option>Select</option>
+              <option value="10px">10px</option>
+              <option value="12px">12px</option>
+              <option value="13px">13px</option>
+              <option value="16px">16px</option>
+            </select>
+          </ons-select>
         </div>
       </ons-list-item>
       <ons-list-item>
         <div class="center" style="color: #61cef0 !important">Typeface</div>
         <div class="right" style="color: #61cef0 !important">
-          Regular
-          <ons-icon
-            icon="chevron-down"
-            size="20px"
-            fixed-width="false"
-            style="color: #61cef0"
-          >
-          </ons-icon>
+          <ons-select class="select" onchange="app.changeFontFace(event)">
+            <select style="color: #61cef0" class="select-input">
+              <option>Select</option>
+              <option value="cursive">Cursive</option>
+              <option value="georgia">Georgia</option>
+              <option value="sans-serif">Sans Serif</option>
+            </select>
+          </ons-select>
         </div>
       </ons-list-item>
     </on-list>
